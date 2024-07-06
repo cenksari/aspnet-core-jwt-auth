@@ -23,7 +23,7 @@ If you like this resource, please follow me on GitHub. Thank you!
 Once the application is started, navigate to https://localhost:7181 in your browser or use an API client like Postman to test API routes.
 
    ```bash
-   POST https://localhost:7181/api/auth/login
+   POST https://localhost:7079/api/auth/login
    ```
 
    ```json
