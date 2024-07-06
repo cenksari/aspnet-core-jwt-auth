@@ -1,6 +1,6 @@
-# Aspnet Core Queue Management
+# Aspnet Core JWT Auth
 
-This project is a aspnet core application developed with a hosted service.
+This project is a aspnet core application developed with a JWT authentication.
 
 If you like this resource, please follow me on GitHub. Thank you!
 
