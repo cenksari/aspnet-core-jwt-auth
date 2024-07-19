@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jwt-api", "jwt-api\jwt-api.csproj", "{714ACC44-00FE-459F-A465-3C242D4E483D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jwt-api", "jwt-api\jwt-api.csproj", "{714ACC44-00FE-459F-A465-3C242D4E483D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jwt-services", "jwt-services\jwt-services.csproj", "{E1F35E95-6EC0-418C-BDB0-888D082D4B20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jwt-services", "jwt-services\jwt-services.csproj", "{E1F35E95-6EC0-418C-BDB0-888D082D4B20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jwt-models", "jwt-models\jwt-models.csproj", "{AADBE4D9-A625-4C76-9514-E0CF0473F971}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jwt-models", "jwt-models\jwt-models.csproj", "{AADBE4D9-A625-4C76-9514-E0CF0473F971}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
