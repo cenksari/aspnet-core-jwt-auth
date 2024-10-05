@@ -1,15 +1,13 @@
 ﻿namespace jwt_api.Controllers;
 
 using jwt_models;
-using jwt_services;
+using jwt_services.TokenService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController, Route("api/[controller]")]
 public class AuthController(TokenService tokenService) : ControllerBase
 {
-	private readonly TokenService _tokenService = tokenService;
-
 	/// <summary>
 	/// Login.
 	/// </summary>
@@ -17,10 +15,10 @@ public class AuthController(TokenService tokenService) : ControllerBase
 	[HttpPost("login")]
 	public IActionResult Login([FromBody] User user)
 	{
-		if (user == null || user.Username == null || user.Password == null)
+		if (user?.Username == null || user?.Password == null)
 			return BadRequest(new { Title = "Please enter your credentials" });
 
-		var token = _tokenService.GenerateToken(user.Username);
+		var token = tokenService.GenerateToken(user.Username, "Member");
 
 		return Ok(new { Token = token });
 	}
