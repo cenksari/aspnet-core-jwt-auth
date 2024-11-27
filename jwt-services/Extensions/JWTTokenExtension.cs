@@ -13,16 +13,11 @@ public static class JWTTokenExtension
 	///	Registers essential JWT token services to IServiceCollection.
 	/// </summary>
 	/// <param name="services">Services</param>
-	public static IServiceCollection AddJWTTokenExtension(this IServiceCollection services)
+	/// <param name="configuration">Configuration</param>
+	public static IServiceCollection AddJWTTokenExtension(this IServiceCollection services, IConfiguration configuration)
 	{
-		// Get service provider.
-		ServiceProvider provider = services.BuildServiceProvider();
-
-		// Get IConfiguration.
-		IConfiguration? configuration = provider.GetService<IConfiguration>();
-
 		// Get JWT key from configuration or throw an exception if not found.
-		string jwtKey = configuration?["Jwt:Key"]
+		string jwtKey = configuration["Jwt:Key"]
 			?? throw new Exception("JWT key configuration not found!");
 
 		// Configure authentication services.
