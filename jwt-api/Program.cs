@@ -4,7 +4,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddJWTTokenExtension(builder.Configuration);
+builder.Services
+    .AddJwtTokenExtension(builder.Configuration)
+    .AddAuthorizationBuilder();
 
 builder.Services.AddControllers();
 
@@ -20,4 +22,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();

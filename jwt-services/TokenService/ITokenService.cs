@@ -2,7 +2,7 @@
 
 public interface ITokenService
 {
-	Task<IDictionary<string, object>> ValidateToken(string token);
+    Task<IDictionary<string, object>> ValidateToken(string token);
 
-	string GenerateToken(string username, string memberRole = "User");
+    string GenerateToken(string memberId, string memberRole = "User");
 }

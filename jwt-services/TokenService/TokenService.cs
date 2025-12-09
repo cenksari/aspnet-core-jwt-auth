@@ -8,54 +8,66 @@ using System.Security.Claims;
 using System.Text;
 
 /// <summary>
-/// Token service.
+/// Service responsible for generating JWT tokens for authentication, including user ID and role claims.
 /// </summary>
-/// <param name="configuration">IConfiguration</param>
+/// <param name="configuration">Injected configuration to read JWT settings</param>
 public class TokenService(IConfiguration configuration) : ITokenService
 {
-    private readonly string _jwtKey = configuration["Jwt:Key"]
-           ?? throw new Exception("JWT key configuration not found!");
+    /// <summary>
+    /// Provides the secret key for signing the JWT.
+    /// </summary>
+    private readonly string jwtKey = configuration["Jwt:Key"]
+           ?? throw new InvalidOperationException("JWT key configuration not found!");
 
-    private readonly string _jwtIssuer = configuration["Jwt:Issuer"]
-           ?? throw new Exception("JWT issuer configuration not found!");
+    /// <summary>
+    /// Provides the issuer of the JWT.
+    /// </summary>
+    private readonly string jwtIssuer = configuration["Jwt:Issuer"]
+           ?? throw new InvalidOperationException("JWT issuer configuration not found!");
 
-    private readonly string _jwtAudience = configuration["Jwt:Audience"]
-           ?? throw new Exception("JWT audience configuration not found!");
+    /// <summary>
+    /// Provides the audience for the JWT.
+    /// </summary>
+    private readonly string jwtAudience = configuration["Jwt:Audience"]
+           ?? throw new InvalidOperationException("JWT audience configuration not found!");
 
-    private readonly string _jwtExpiryDays = configuration["Jwt:ExpiryDays"]
-            ?? throw new Exception("JWT expiration configuration not found!");
+    /// <summary>
+    /// Provides the expiration time (in days) for the JWT.
+    /// </summary>
+    private readonly string jwtExpiryDays = configuration["Jwt:ExpiryDays"]
+            ?? throw new InvalidOperationException("JWT expiration configuration not found!");
 
     /// <summary>
     ///	Generates JWT token.
     /// </summary>
     /// <param name="memberId">User ID</param>
     /// <param name="memberRole">User role</param>
-    public string GenerateToken(string memberId, string memberRole = "Member")
+    public string GenerateToken(string memberId, string memberRole = "User")
     {
         // Create security key.
-        SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(_jwtKey));
+        SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(jwtKey));
 
         // Create signing credentials.
         SigningCredentials credentials = new(key, SecurityAlgorithms.HmacSha256);
 
         // Set token expiration.
-        DateTime expiration = DateTime.UtcNow.AddDays(Convert.ToDouble(_jwtExpiryDays));
+        DateTime expiration = DateTime.UtcNow.AddDays(Convert.ToDouble(jwtExpiryDays));
 
         // Define token claims.
-        Dictionary<string, object> claims = new()
-        {
-            [ClaimTypes.Role] = memberRole,
-            [ClaimTypes.NameIdentifier] = memberId,
-        };
+        List<Claim> claims =
+        [
+            new Claim(ClaimTypes.Role, memberRole),
+            new Claim(ClaimTypes.NameIdentifier, memberId),
+        ];
 
         // Create token descriptor.
         SecurityTokenDescriptor tokenDescriptor = new()
         {
-            Claims = claims,
-            Issuer = _jwtIssuer,
+            Issuer = jwtIssuer,
+            Subject = new(claims),
             Expires = expiration,
-            Audience = _jwtAudience,
-            SigningCredentials = credentials,
+            Audience = jwtAudience,
+            SigningCredentials = credentials
         };
 
         // Create token handler.
@@ -77,7 +89,7 @@ public class TokenService(IConfiguration configuration) : ITokenService
     /// <param name="token">JWT token</param>
     public async Task<IDictionary<string, object>> ValidateToken(string token)
     {
-        byte[] key = Encoding.UTF8.GetBytes(_jwtKey);
+        byte[] key = Encoding.UTF8.GetBytes(jwtKey);
 
         // Create security key.
         SymmetricSecurityKey securityKey = new(key);
@@ -85,8 +97,8 @@ public class TokenService(IConfiguration configuration) : ITokenService
         // Set validation parameters.
         TokenValidationParameters validationParameters = new()
         {
-            ValidIssuer = _jwtIssuer,
-            ValidAudience = _jwtAudience,
+            ValidIssuer = jwtIssuer,
+            ValidAudience = jwtAudience,
             ValidateIssuer = true,
             ValidateAudience = true,
             ValidateLifetime = true,

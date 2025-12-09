@@ -4,9 +4,9 @@ using System.Text.Json.Serialization;
 
 public record User
 {
-	[JsonPropertyName("username")]
-	public string? Username { get; init; }
+    [JsonPropertyName("username")]
+    public string? Username { get; init; }
 
-	[JsonPropertyName("password")]
-	public string? Password { get; init; }
+    [JsonPropertyName("password")]
+    public string? Password { get; init; }
 }
