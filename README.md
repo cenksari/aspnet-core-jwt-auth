@@ -1,4 +1,4 @@
-# Aspnet Core JWT Auth
+# ASP.NET Core JWT Auth
 
 **Unlock Secure Authentication with Aspnet Core JWT Auth**
 
